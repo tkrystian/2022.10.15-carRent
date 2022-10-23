@@ -46,7 +46,7 @@ public class GUI {
 
 
     public static User readLoginAndPassword() {
-        Scanner scanner = new Scanner(System.in);
+        final Scanner scanner = new Scanner(System.in);
         System.out.println("Login:");
         String login = scanner.nextLine();
         System.out.println("Password:");
