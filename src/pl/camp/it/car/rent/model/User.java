@@ -1,5 +1,9 @@
 package pl.camp.it.car.rent.model;
 
+import org.apache.commons.codec.cli.Digest;
+import org.apache.commons.codec.digest.DigestUtils;
+import pl.camp.it.car.rent.Authenticator;
+
 public class User {
     private String login;
     private String password;
@@ -40,6 +44,15 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof User)){
+    return false;
+        }
+        User temp = (User) obj;
+        return this.login.equals(temp.login) && this.password.equals(DigestUtils.md5Hex(temp.password + Authenticator.seed));
     }
 }
 //????

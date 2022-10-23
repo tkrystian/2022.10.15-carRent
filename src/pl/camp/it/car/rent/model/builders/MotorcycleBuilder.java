@@ -40,7 +40,9 @@ public class MotorcycleBuilder {
     }
 
     public Motorcycle build(){
-        this.motorcycle.setRent(false);
-        return this.motorcycle;
+        Motorcycle motorcycle1 = this.motorcycle;
+        motorcycle = new Motorcycle();
+        return motorcycle1;
     }
+
 }
