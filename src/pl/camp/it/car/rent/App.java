@@ -3,8 +3,6 @@ package pl.camp.it.car.rent;
 import pl.camp.it.car.rent.database.UserDB;
 import pl.camp.it.car.rent.database.VehicleDB;
 import pl.camp.it.car.rent.gui.GUI;
-import pl.camp.it.car.rent.model.Bus;
-import pl.camp.it.car.rent.model.Car;
 
 import java.util.Scanner;
 
