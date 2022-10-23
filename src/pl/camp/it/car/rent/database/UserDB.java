@@ -1,11 +1,8 @@
 package pl.camp.it.car.rent.database;
-
-import org.apache.commons.codec.digest.DigestUtils;
-import pl.camp.it.car.rent.Authenticator;
 import pl.camp.it.car.rent.model.User;
 
 public class UserDB {
-    private User[] users = new User[2];
+    private final User[] users = new User[2];
 
     public UserDB() {
         this.users[0] = new User("mateusz",

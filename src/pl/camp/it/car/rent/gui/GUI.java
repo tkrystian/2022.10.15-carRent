@@ -2,10 +2,8 @@ package pl.camp.it.car.rent.gui;
 
 import pl.camp.it.car.rent.Authenticator;
 import pl.camp.it.car.rent.database.VehicleDB;
-import pl.camp.it.car.rent.model.Bus;
-import pl.camp.it.car.rent.model.Car;
-import pl.camp.it.car.rent.model.User;
-import pl.camp.it.car.rent.model.Vehicle;
+import pl.camp.it.car.rent.model.*;
+import pl.camp.it.car.rent.model.builders.MotorcycleBuilder;
 
 import java.util.Scanner;
 
@@ -13,28 +11,42 @@ public class GUI {
     public static void showMenu() {
         System.out.println("1. List vehicles");
         System.out.println("2. Rent vehicle");
-        if(Authenticator.loggedUser.getRole().equals("ADMIN")) {
+        if (Authenticator.loggedUser.getRole().equals("ADMIN")) {
             System.out.println("3. Add vehicle");
         }
 
         System.out.println("4. Exit");
     }
 
-    public static void listVehicles(Vehicle[] vehicles){
-        for(Vehicle currentVehicle : vehicles) {
-            String result = currentVehicle.getBrand() + " " +
-                    currentVehicle.getModel() + " " + currentVehicle.getPrice() + " ";
-            if(currentVehicle instanceof Bus){
-                result = result + ((Bus) currentVehicle).getSeats() + " ";
+    public static void listVehicles(Vehicle[] vehicles) {
+        for (Vehicle currentVehicle : vehicles) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(currentVehicle.getBrand())
+                    .append(" ")
+                    .append(currentVehicle.getModel())
+                    .append(" ")
+                    .append(currentVehicle.getPrice())
+                    .append(" ")
+                    .append(currentVehicle.getYear())
+                    .append(" ");
+            if (currentVehicle instanceof Bus) {
+                sb.append(((Bus) currentVehicle).getSeats())
+                .append(" ");
+            } else if (currentVehicle instanceof Motorcycle) {
+                sb.append(((Motorcycle) currentVehicle).isCart())
+                        .append(" ");
             }
-            result = result + currentVehicle.getPlate() + " " + currentVehicle.isRent();
-            System.out.println(result);
-            }
+
+            sb.append(currentVehicle.getPlate())
+                    .append(" ")
+                    .append(currentVehicle.isRent());
+            System.out.println(sb.toString());
         }
+    }
 
 
     public static User readLoginAndPassword() {
-        Scanner scanner = new Scanner(System.in);
+        final Scanner scanner = new Scanner(System.in);
         System.out.println("Login:");
         String login = scanner.nextLine();
         System.out.println("Password:");
@@ -45,6 +57,7 @@ public class GUI {
         Scanner scanner = new Scanner(System.in);
         System.out.println("1. Car");
         System.out.println("2. Bus");
+        System.out.println("3. Motorcycle");
         String type = scanner.nextLine();
         switch (type) {
             case "1":
@@ -80,6 +93,23 @@ public class GUI {
                 bus.setSeats(Integer.parseInt(scanner.nextLine()));
                 vehicleDB.addVehicle(bus);
                 System.out.println("Bus added !!");
+                break;
+            case "3":
+                MotorcycleBuilder mb = new MotorcycleBuilder();
+                System.out.println("Brand:");
+                mb.brand(scanner.nextLine());
+                System.out.println("Model:");
+                mb.model(scanner.nextLine());
+                System.out.println("Year:");
+                mb.year(Integer.parseInt(scanner.nextLine()));
+                System.out.println("Plate:");
+                mb.plate(scanner.nextLine());
+                System.out.println("Price:");
+                mb.price(Double.parseDouble(scanner.nextLine()));
+                System.out.println("Has cart (y/n:)");
+                mb.cart(scanner.nextLine().equals("y"));
+                vehicleDB.addVehicle(mb.build());
+                System.out.println("Motorcycle added !!");
                 break;
             default:
                 System.out.println("Wrong choose !!");
